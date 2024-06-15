@@ -1,3 +1,7 @@
+body {
+  user-select: none;
+}
+
 .timer {
   font-size: 2rem;
   text-align: center;
@@ -6,4 +10,69 @@
 .spinner-border {
   width: 3rem;
   height: 3rem;
+}
+
+body.dark-mode {
+  background-color: #222; /* Dark background color */
+  color: #fff; /* Light text color */
+}
+
+/* Dark mode for Bootstrap card */
+.card.dark-mode {
+  background-color: #333; /* Darker card background */
+  border-color: #444; /* Darker border color */
+  color: #fff; /* Light text color */
+}
+
+/* Dark mode for card header */
+.card-header.dark-mode {
+  background-color: #555; /* Darker header background */
+  color: #fff; /* Light text color */
+}
+
+/* Dark mode for card body */
+.card-body.dark-mode {
+  background-color: #333; /* Darker body background */
+  color: #fff; /* Light text color */
+}
+
+/* Dark mode for countdown timer */
+.timer.dark-mode {
+  color: #fff; /* Light text color */
+}
+
+.list-group-item.dark-mode {
+  background-color: #333; /* Darker list background */
+  color: #fff; /* Light text color */
+}
+
+.custom-switch {
+  cursor: pointer;
+}
+
+.dark-mode {
+  background-color: #343a40; /* Dark background color */
+  color: #fff; /* Light text color */
+}
+
+.dark-mode .list-group-item {
+  background-color: #343a40; /* Darker background for list items */
+  color: #fff; /* Light text color */
+}
+
+.dark-mode .form-control {
+  background-color: #454d55; /* Darker background for form controls */
+  color: #fff; /* Light text color */
+  border-color: #454d55; /* Matching border color */
+}
+
+.dark-mode .btn-primary {
+  background-color: #007bff; /* Blue button color in dark mode */
+  border-color: #007bff; /* Matching border color */
+  color: #fff; /* Light text color */
+}
+
+.dark-mode .btn-primary:hover {
+  background-color: #0069d9; /* Darker blue on hover */
+  border-color: #0062cc; /* Darker border color on hover */
 }

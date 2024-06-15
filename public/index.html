@@ -13,22 +13,144 @@
     <div class="container">
         <div class="row justify-content-center mt-5">
             <div class="col-md-6">
-                <div class="card text-center">
+                <div class="card text-center" id="kknCard"> <!-- Added id="kknCard" for easier targeting -->
                     <div class="card-header">
                         <h2 id="message"></h2>
                     </div>
                     <div class="card-body">
+                        <!-- Countdown timer -->
                         <div id="countdown" class="timer"></div>
+
+                        <!-- Loading spinner -->
                         <div id="loading" class="spinner-border" role="status">
                             <span class="sr-only">Loading...</span>
+                        </div>
+                    </div>
+                    <!-- Dark mode switch -->
+                    <div class="custom-control custom-switch mb-3">
+                        <input type="checkbox" class="custom-control-input" id="darkSwitch">
+                        <label class="custom-control-label" for="darkSwitch">Dark Mode</label>
+                    </div>
+
+                    <!-- To-do list -->
+                    <div class="mt-4" id="darkSwitch">
+                        <h5>To-Do List</h5>
+                        <ul id="todoList" class="list-group">
+                            <!-- To-do items will be dynamically added here -->
+                        </ul>
+                        <div class="input-group mt-3">
+                            <input type="text" id="todoInput" class="form-control" placeholder="Add new task">
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" type="button" id="addTodoBtn">Add</button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script>
+        $(document).ready(function () {
+            const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+            const storedTheme = localStorage.getItem('theme');
+            const darkSwitch = document.getElementById('darkSwitch');
+            const kknCard = document.getElementById('kknCard');
+            const todoList = document.getElementById('todoList');
+            const todoInput = document.getElementById('todoInput');
+            const addTodoBtn = document.getElementById('addTodoBtn');
+
+            // Load tasks from localStorage on page load
+            loadTodoList();
+
+            if (storedTheme === 'dark' || (prefersDarkScheme.matches && !storedTheme)) {
+                enableDarkMode();
+                darkSwitch.checked = true;
+            }
+
+            darkSwitch.addEventListener('change', function () {
+                if (darkSwitch.checked) {
+                    enableDarkMode();
+                    localStorage.setItem('theme', 'dark');
+                } else {
+                    disableDarkMode();
+                    localStorage.setItem('theme', 'light');
+                }
+            });
+
+            addTodoBtn.addEventListener('click', function () {
+                const todoText = todoInput.value.trim();
+                if (todoText !== '') {
+                    addTodoItem(todoText);
+                    saveTodoList(); // Save updated list to localStorage
+                    todoInput.value = '';
+                }
+            });
+
+            todoList.addEventListener('click', function (event) {
+                if (event.target.classList.contains('delete-todo')) {
+                    const item = event.target.parentElement;
+                    todoList.removeChild(item);
+                    saveTodoList(); // Save updated list to localStorage
+                }
+            });
+
+            function enableDarkMode() {
+                document.body.classList.add('dark-mode');
+                kknCard.classList.add('dark-mode');
+                $('#dark-mode-style').attr('href', '/css/style.css');
+            }
+
+            function disableDarkMode() {
+                document.body.classList.remove('dark-mode');
+                kknCard.classList.remove('dark-mode');
+                $('#dark-mode-style').attr('href', '');
+            }
+
+            function addTodoItem(text) {
+                const li = document.createElement('li');
+                li.classList.add('list-group-item');
+
+                // Create a span element for the todo item text
+                const todoText = document.createElement('span');
+                todoText.textContent = text;
+                li.appendChild(todoText);
+
+                const deleteBtn = document.createElement('button');
+                deleteBtn.className = 'btn btn-sm btn-danger float-right delete-todo';
+                deleteBtn.textContent = 'Delete';
+                li.appendChild(deleteBtn);
+
+                // Append the li to todoList
+                todoList.appendChild(li);
+
+                // Save the todo list
+                saveTodoList();
+            }
+
+            function saveTodoList() {
+                // Save tasks to localStorage
+                const tasks = [];
+                todoList.querySelectorAll('li').forEach(function (item) {
+                    // Get the text content from the span element inside li
+                    const todoText = item.querySelector('span').textContent.trim();
+                    tasks.push(todoText);
+                });
+                localStorage.setItem('todoTasks', JSON.stringify(tasks));
+            }
+
+
+            function loadTodoList() {
+                // Load tasks from localStorage
+                const tasks = JSON.parse(localStorage.getItem('todoTasks')) || [];
+                tasks.forEach(function (taskText) {
+                    addTodoItem(taskText);
+                });
+            }
+        });
+
+
         $(document).ready(function () {
             // Hide the loading spinner and show the countdown timer once loaded
             $('#loading').show();
