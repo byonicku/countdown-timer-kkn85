@@ -7,17 +7,29 @@
     <title>KKN Countdown Timer</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="/css/style.css" rel="stylesheet">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
 </head>
 
 <body>
     <div class="container">
-        <div class="row justify-content-center mt-5">
+        <header class="text-center mt-4">
+            <div class="logo-wrapper">
+                <a class="logo-uajy" href="https://www.uajy.ac.id/id-id" target="_blank"></a>
+                <a class="logo-kkn" href="https://www.instagram.com/kknitumudah/" target="_blank"></a>
+            </div>
+        </header>
+        <div class="row justify-content-center mt-4">
             <div class="col-md-6">
                 <div class="card text-center" id="kknCard"> <!-- Added id="kknCard" for easier targeting -->
                     <div class="card-header">
                         <h2 id="message"></h2>
                     </div>
                     <div class="card-body">
+
                         <!-- Countdown timer -->
                         <div id="countdown" class="timer"></div>
 
@@ -27,21 +39,21 @@
                         </div>
                     </div>
                     <!-- Dark mode switch -->
-                    <div class="custom-control custom-switch mb-3">
+                    <div class="custom-control custom-switch mb-1">
                         <input type="checkbox" class="custom-control-input" id="darkSwitch">
-                        <label class="custom-control-label" for="darkSwitch">Dark Mode</label>
+                        <label class="custom-control-label custom-switch p-0" for="darkSwitch">Mode Gelap</label>
                     </div>
 
                     <!-- To-do list -->
                     <div class="mt-4" id="darkSwitch">
-                        <h5>To-Do List</h5>
+                        <h5>Daftar Kegiatan</h5>
                         <ul id="todoList" class="list-group">
                             <!-- To-do items will be dynamically added here -->
                         </ul>
                         <div class="input-group mt-3">
-                            <input type="text" id="todoInput" class="form-control" placeholder="Add new task">
+                            <input type="text" id="todoInput" class="form-control" placeholder="Masukan kegiatanmu!">
                             <div class="input-group-append">
-                                <button class="btn btn-primary" type="button" id="addTodoBtn">Add</button>
+                                <button class="btn btn-primary text-bold" type="button" id="addTodoBtn">+</button>
                             </div>
                         </div>
                     </div>
@@ -119,7 +131,7 @@
 
                 const deleteBtn = document.createElement('button');
                 deleteBtn.className = 'btn btn-sm btn-danger float-right delete-todo';
-                deleteBtn.textContent = 'Delete';
+                deleteBtn.textContent = '-';
                 li.appendChild(deleteBtn);
 
                 // Append the li to todoList
@@ -128,6 +140,16 @@
                 // Save the todo list
                 saveTodoList();
             }
+
+            $(document).on('keypress', function (e) {
+                if (e.which == 13) {
+                    if (e.target.value === "")
+                        return;
+
+                    addTodoItem(e.target.value);
+                    e.target.value = "";
+                }
+            });
 
             function saveTodoList() {
                 // Save tasks to localStorage
@@ -150,7 +172,6 @@
             }
         });
 
-
         $(document).ready(function () {
             // Hide the loading spinner and show the countdown timer once loaded
             $('#loading').show();
@@ -164,10 +185,10 @@
 
             if (currentDate < kknStartDate) {
                 targetDate = kknStartDate;
-                message = 'KKN 85 starts in:';
+                message = 'KKN 85 mulai dalam';
             } else {
                 targetDate = kknEndDate;
-                message = 'KKN 85 ends in:';
+                message = 'KKN 85 selesai dalam';
             }
             // Hide the loading spinner and show the countdown timer once loaded
             setTimeout(function () {
@@ -187,11 +208,12 @@
                 const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
                 const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-                $('#countdown').text(`${days} days ${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`);
+                $('#countdown').text(`${days} hari ${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`);
 
                 if (distance < 0) {
                     clearInterval(countdownFunction);
-                    $('#countdown').text('KKN has ended!');
+                    $('#countdown').text('');
+                    $('#message').text('KKN sudah selesai!');
                 }
             }, 1000);
         });

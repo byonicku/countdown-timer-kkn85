@@ -76,3 +76,21 @@ body.dark-mode {
   background-color: #0069d9; /* Darker blue on hover */
   border-color: #0062cc; /* Darker border color on hover */
 }
+
+.logo-wrapper {
+  display: flex;
+  align-items: center;
+  align-content: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+.logo-uajy {
+  content: url("/image/logo_uajy.png");
+  width: 50px;
+}
+
+.logo-kkn {
+  content: url("/image/logo_merah.png");
+  width: 40px;
+}
